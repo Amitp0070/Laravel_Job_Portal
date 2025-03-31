@@ -110,6 +110,8 @@
                     $("#confirm_password").removeClass("is-invalid")
                         .siblings('p').removeClass('invalid-feedback')
                         .html('')
+                        
+                    window.location.href='{{ route("account.login") }}';
                 }
             }
         });

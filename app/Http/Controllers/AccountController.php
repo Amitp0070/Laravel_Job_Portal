@@ -20,20 +20,22 @@ class AccountController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:5|same:confirm_password',
             'confirm_password' => 'required',
         ]);
 
-        $user  = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
 
-        session()->flash('success', 'You have register successfully.');
-        
         if ($validator->passes()) {
+
+            $user  = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+            session()->flash('success', 'You have register successfully.');
+
             return response()->json([
                 'status' => true,
                 'errors' => [],
