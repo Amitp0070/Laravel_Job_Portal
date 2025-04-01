@@ -94,7 +94,7 @@ class AccountController extends Controller
         ]);
 
         if ($validator->passes()) {
-            
+
             $user  = User::find($id);
             $user->name = $request->name;
             $user->email = $request->email;
@@ -108,14 +108,12 @@ class AccountController extends Controller
                 'status' => true,
                 'errors' => [],
             ]);
-
         } else {
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors(),
             ]);
         }
-        
     }
 
 
@@ -123,5 +121,35 @@ class AccountController extends Controller
     {
         Auth::logout();
         return redirect()->route('account.login');
+    }
+
+    public function updateProfilePic(Request $request)
+    {
+        $id = Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image',
+        ]);
+
+        if ($validator->passes()) {
+
+            $image = $request->image;
+            $ext = $image->getClientOriginalExtension();
+            $imageName = $id . '-' . time() . '.' . $ext;
+            $image->move(public_path('/profile_pic'), $imageName);
+
+            User::where('id', $id)->update(['image' => $imageName]);
+            session()->flash('success', 'Profile Picture Updated successfully.');
+
+            return response()->json([
+                'status' => true,
+                'errors' => [],
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
     }
 }
