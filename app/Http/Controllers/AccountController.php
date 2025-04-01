@@ -68,7 +68,7 @@ class AccountController extends Controller
                 return redirect()->route('account.profile');
                 
             } else {
-                return redirect()->route('account.login')->with('error', 'Either Email/Password is incorrect');
+                return redirect()->route('account.login')->with('error', 'Either Email/Password is incorrect!');
             }
             
 
@@ -79,5 +79,10 @@ class AccountController extends Controller
 
     public function profile(){
         return view('front.account.profile');
+    }
+    
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('account.login');
     }
 }

@@ -8,12 +8,12 @@
             <div class="col-md-5">
                 @if(Session::has('success'))
                 <div class="alert alert-success">
-                    <p class="mb-0 pb-0">{{ @Session::get('success') }}</p>
+                    <p class="mb-0 pb-0">{{ Session::get('success') }}</p>
                 </div>
                 @endif
                 @if(Session::has('error'))
                 <div class="alert alert-danger">
-                    <p class="mb-0 pb-0">{{ @Session::get('error') }}</p>
+                    <p class="mb-0 pb-0">{{ Session::get('error') }}</p>
                 </div>
                 @endif
                 <div class="card shadow border-0 p-5">

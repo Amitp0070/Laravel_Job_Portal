@@ -8,10 +8,23 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/',[HomeController::class, 'index'])->name('home');
-Route::get('/account/register',[AccountController::class, 'registration'])->name('account.registration');
-Route::post('/account/process-register',[AccountController::class, 'processRegister'])->name('account.processRegister');
-Route::get('/account/login',[AccountController::class, 'login'])->name('account.login');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::post('/account/authenticate',[AccountController::class, 'authenticate'])->name('account.authenticate');
-Route::get('/account/profile',[AccountController::class, 'profile'])->name('account.profile');
+
+
+Route::group(['prefix' => 'account'], function () {
+    // Guest Rote
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('login', [AccountController::class, 'login'])->name('account.login');
+        Route::get('register', [AccountController::class, 'registration'])->name('account.registration');
+        Route::post('process-register', [AccountController::class, 'processRegister'])->name('account.processRegister');
+        Route::post('authenticate', [AccountController::class, 'authenticate'])->name('account.authenticate');
+    });
+
+    // Authenticate Route 
+
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('profile', [AccountController::class, 'profile'])->name('account.profile');
+        Route::get('logout', [AccountController::class, 'logout'])->name('account.logout');
+    });
+});

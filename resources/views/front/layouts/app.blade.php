@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="pinterest" content="nopin" />
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" />
     <!-- Fav Icon -->
@@ -32,7 +32,11 @@
                             <a class="nav-link" aria-current="page" href="jobs.html">Find Jobs</a>
                         </li>
                     </ul>
+                    @if(!Auth::check())
                     <a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}" type="submit">Login</a>
+                    @else
+                    <a class="btn btn-outline-primary me-2" href="{{ route('account.profile') }}" type="submit">Account</a>
+                    @endif
                     <a class="btn btn-primary" href="post-job.html" type="submit">Post a Job</a>
                 </div>
             </div>
@@ -74,7 +78,7 @@
     <script src="{{ asset('assets/js/lazyload.17.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
 
-    
+
     <script>
         $.ajaxSetup({
             headers: {
