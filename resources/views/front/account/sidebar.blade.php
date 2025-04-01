@@ -1,10 +1,14 @@
 <div class="card border-0 shadow mb-4 p-3">
     <div class="s-body text-center mt-3">
         @if(Auth::user()->image != '')
-        <img src="{{ asset('profile_pic/'.Auth::user()->image) }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 200px; ">
+        <!-- For showing thumbnail  -->
+        <!-- <img src="{{ asset('profile_pic/thumb/'.Auth::user()->image) }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; "> -->
+        
+        <!-- For showing real image    -->
+        <img src="{{ asset('profile_pic/'.Auth::user()->image) }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height:190px ">
 
         @else
-        <img src="{{ asset(assets/images/avatar7.png) }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+        <img src="{{ asset('assets/images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
 
         @endif
         <h5 class="mt-3 pb-0">{{ Auth::user()->name }}</h5>

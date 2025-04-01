@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class AccountController extends Controller
 {
@@ -135,7 +138,21 @@ class AccountController extends Controller
             $image = $request->image;
             $ext = $image->getClientOriginalExtension();
             $imageName = $id . '-' . time() . '.' . $ext;
-            $image->move(public_path('/profile_pic'), $imageName);
+            $image->move(public_path('/profile_pic/'), $imageName);
+
+            // create a small thumbnail
+
+            $sourcePath = public_path('/profile_pic/'.$imageName);
+            $manager = new ImageManager(Driver::class);
+            $image = $manager->read($sourcePath);
+
+            $image->cover(150, 150);
+            $image->toPng()->save(public_path('/profile_pic/thumb/'.$imageName));
+
+
+            // Delete old profile image 
+            File::delete(public_path('/profile_pic/thumb/'.Auth::user()->image));
+            File::delete(public_path('/profile_pic/'.Auth::user()->image));
 
             User::where('id', $id)->update(['image' => $imageName]);
             session()->flash('success', 'Profile Picture Updated successfully.');
@@ -144,7 +161,6 @@ class AccountController extends Controller
                 'status' => true,
                 'errors' => [],
             ]);
-
         } else {
             return response()->json([
                 'status' => false,
