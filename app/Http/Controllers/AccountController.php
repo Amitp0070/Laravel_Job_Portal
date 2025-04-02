@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\JobType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -142,17 +144,17 @@ class AccountController extends Controller
 
             // create a small thumbnail
 
-            $sourcePath = public_path('/profile_pic/'.$imageName);
+            $sourcePath = public_path('/profile_pic/' . $imageName);
             $manager = new ImageManager(Driver::class);
             $image = $manager->read($sourcePath);
 
             $image->cover(150, 150);
-            $image->toPng()->save(public_path('/profile_pic/thumb/'.$imageName));
+            $image->toPng()->save(public_path('/profile_pic/thumb/' . $imageName));
 
 
             // Delete old profile image 
-            File::delete(public_path('/profile_pic/thumb/'.Auth::user()->image));
-            File::delete(public_path('/profile_pic/'.Auth::user()->image));
+            File::delete(public_path('/profile_pic/thumb/' . Auth::user()->image));
+            File::delete(public_path('/profile_pic/' . Auth::user()->image));
 
             User::where('id', $id)->update(['image' => $imageName]);
             session()->flash('success', 'Profile Picture Updated successfully.');
@@ -161,6 +163,37 @@ class AccountController extends Controller
                 'status' => true,
                 'errors' => [],
             ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+    }
+
+    public function createJob()
+    {
+        $categories = Category::orderBy('name', 'ASC')->where('status', 1)->get();
+        $jobTypes = JobType::orderBy('name', 'ASC')->where('status', 1)->get();
+        return view('front.account.job.create', [
+            'categories' => $categories,
+            'jobTypes' => $jobTypes
+        ]);
+    }
+
+    public function saveJob(Request $request)
+    {
+        $rules = [
+            'title' => 'required|min:5|max:200',
+            'category' => 'required',
+            'jobType' => 'required',
+            'vacancy' => 'required|integer',
+            'location' => 'required|max:50',
+            'description' => 'required',
+            'company_name' => 'required|min:3|max:75',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->passes()) {
         } else {
             return response()->json([
                 'status' => false,
