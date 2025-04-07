@@ -46,9 +46,9 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label for="" class="mb-2">Job Nature<span class="req">*</span></label>
+                                    <label for="" class="mb-2">Job Type<span class="req">*</span></label>
                                     <select class="form-select" name="jobType" id="jobType">
-                                        <option value="">Select Job Nature</option>
+                                        <option value="">Select Job Type</option>
                                         @if($jobTypes->isNotEmpty())
                                         @foreach($jobTypes as $jobTypes)
                                         <option value="{{ $jobTypes->id }}">{{ $jobTypes->name }}</option>
@@ -74,7 +74,7 @@
 
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Location<span class="req">*</span></label>
-                                    <input type="text" placeholder="location" id="location" name="Location"
+                                    <input type="text" placeholder="location" id="location" name="location"
                                         class="form-control">
                                     <p></p>
                                 </div>
@@ -88,7 +88,7 @@
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Benefits</label>
-                                <textarea class="form-control" name="benefits" id="benefits" cols="5" rows="5"
+                                <textarea class="form-control" name="benifits" id="benifits" cols="5" rows="5"
                                     placeholder="Benefits"></textarea>
                             </div>
                             <div class="mb-4">
@@ -98,7 +98,7 @@
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Qualifications</label>
-                                <textarea class="form-control" name="qualifications" id="qualifications" cols="5"
+                                <textarea class="form-control" name="qualification" id="qualification" cols="5"
                                     rows="5" placeholder="Qualifications"></textarea>
                             </div>
 
@@ -138,14 +138,14 @@
 
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Location</label>
-                                    <input type="text" placeholder="Location" id="location" name="location"
+                                    <input type="text" placeholder="Location" id="company_location" name="company_location"
                                         class="form-control">
                                 </div>
                             </div>
 
                             <div class="mb-4">
                                 <label for="" class="mb-2">Website</label>
-                                <input type="text" placeholder="Website" id="website" name="website"
+                                <input type="text" placeholder="Website" id="company_website" name="company_website"
                                     class="form-control">
                             </div>
                         </div>
@@ -173,15 +173,36 @@
             data: $('#createJobForm').serializeArray(),
             success: function(response) {
                 if (response.status == true) {
-                    $("#name").removeClass("is-invalid")
+                    $("#title").removeClass("is-invalid")
                         .siblings('p').removeClass('invalid-feedback')
                         .html('')
 
-                    $("#email").removeClass("is-invalid")
+                    $("#category").removeClass("is-invalid")
                         .siblings('p').removeClass('invalid-feedback')
                         .html('')
 
-                    window.location.href = "{{ route('account.profile') }}";
+                    $("#jobType").removeClass("is-invalid")
+                        .siblings('p').removeClass('invalid-feedback')
+                        .html('')
+
+                    $("#company_name").removeClass("is-invalid")
+                        .siblings('p').removeClass('invalid-feedback')
+                        .html('')
+
+                    $("#description").removeClass("is-invalid")
+                        .siblings('p').removeClass('invalid-feedback')
+                        .html('')
+
+                    $("#location").removeClass("is-invalid")
+                        .siblings('p').removeClass('invalid-feedback')
+                        .html('')
+
+                    $("#vacancy ").removeClass("is-invalid")
+                        .siblings('p').removeClass('invalid-feedback')
+                        .html('')
+
+
+                    window.location.href = "{{ route('account.myJobs') }}";
                 } else {
                     var errors = response.errors
 

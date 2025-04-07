@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Job;
 use App\Models\JobType;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -194,11 +195,41 @@ class AccountController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->passes()) {
+
+            $job = new Job();
+            $job->title = $request->title;
+            $job->category_id = $request->category;
+            $job->job_type_id = $request->jobType;
+            $job->vacancy = $request->vacancy;
+            $job->salary = $request->salary;
+            $job->location = $request->location;
+            $job->description = $request->description;
+            $job->benifits = $request->benifits;
+            $job->responsibility = $request->responsibility;
+            $job->qualification = $request->qualification;
+            $job->experience = $request->experience;
+            $job->keywords = $request->keywords;
+            $job->company_name = $request->company_name;
+            $job->company_location = $request->company_location;
+            $job->company_website = $request->company_website;
+            $job->save();
+
+            session()->flash('success', 'Job Created successfully.');
+            return response()->json([
+                'status' => true,
+                'errors' => [],
+            ]);
         } else {
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors(),
             ]);
         }
+    }
+
+    public function myJobs()
+    {
+        return view('front.account.job.my-jobs', 
+        );
     }
 }
