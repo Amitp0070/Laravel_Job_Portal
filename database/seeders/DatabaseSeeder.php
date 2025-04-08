@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Job;
 use App\Models\JobType;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,16 +16,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        // User::factory(10)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
         // Seed Categories
-        Category::factory()->count(5)->create();
+        // Category::factory()->count(5)->create();
 
         // Seed Job Types
-        JobType::factory()->count(5)->create();
-    }
+        // JobType::factory()->count(5)->create();
+
+        // Seed Jobs
+        Job::factory()->count(20)->create(); 
+     }
 }
