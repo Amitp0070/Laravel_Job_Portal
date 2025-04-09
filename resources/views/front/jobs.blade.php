@@ -19,59 +19,61 @@
 
         <div class="row pt-5">
             <div class="col-md-4 col-lg-3 sidebar mb-4">
-                <div class="card border-0 shadow p-4">
-                    <div class="mb-4">
-                        <h2>Keywords</h2>
-                        <input type="text" placeholder="Keywords" class="form-control">
-                    </div>
+                <form action="" method="post" name="searchForm" id="searchForm">
+                    <div class="card border-0 shadow p-4">
+                        <div class="mb-4">
+                            <h2>Keywords</h2>
+                            <input type="text" id="keywords" name="keywords" placeholder="Keywords" class="form-control">
+                        </div>
 
-                    <div class="mb-4">
-                        <h2>Location</h2>
-                        <input type="text" placeholder="Location" class="form-control">
-                    </div>
+                        <div class="mb-4">
+                            <h2>Location</h2>
+                            <input type="text" name="location" id="location" placeholder="Location" class="form-control">
+                        </div>
 
-                    <div class="mb-4">
-                        <h2>Category</h2>
-                        <select name="category" id="category" class="form-control">
-                            <option value="">Select a Category</option>
-                            @if($categories)
-                            @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <div class="mb-4">
+                            <h2>Category</h2>
+                            <select name="category" id="category" class="form-control">
+                                <option value="">Select a Category</option>
+                                @if($categories)
+                                @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                                @endif
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <h2>Job Type</h2>
+                            @if($jobTypes->isNotEmpty())
+                            @foreach($jobTypes as $jobType)
+                            <div class="form-check mb-2">
+                                <input class="form-check-input " name="jobType" type="checkbox" value="{{ $jobType->id }}" id="job-type-{{ $jobType->id }}">
+                                <label class="form-check-label " for="job-type-{{ $jobType->id }}">{{ $jobType->name }}</label>
+                            </div>
                             @endforeach
                             @endif
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <h2>Job Type</h2>
-                        @if($jobTypes->isNotEmpty())
-                        @foreach($jobTypes as $jobType)
-                        <div class="form-check mb-2">
-                            <input class="form-check-input " name="job_type" type="checkbox" value="{{ $jobType->id }}" id="job-type-{{ $jobType->id }}">
-                            <label class="form-check-label " for="job-type-{{ $jobType->id }}">{{ $jobType->name }}</label>
                         </div>
-                        @endforeach
-                        @endif
-                    </div>
 
-                    <div class="mb-4">
-                        <h2>Experience</h2>
-                        <select name="category" id="category" class="form-control">
-                            <option value="">Select Experience</option>
-                            <option value="">1 Year</option>
-                            <option value="">2 Years</option>
-                            <option value="">3 Years</option>
-                            <option value="">4 Years</option>
-                            <option value="">5 Years</option>
-                            <option value="">6 Years</option>
-                            <option value="">7 Years</option>
-                            <option value="">8 Years</option>
-                            <option value="">9 Years</option>
-                            <option value="">10 Years</option>
-                            <option value="">10+ Years</option>
-                        </select>
+                        <div class="mb-4">
+                            <h2>Experience</h2>
+                            <select name="experience" id="experience" class="form-control">
+                                <option value="">Select Experience</option>
+                                <option value="">1 Year</option>
+                                <option value="">2 Years</option>
+                                <option value="">3 Years</option>
+                                <option value="">4 Years</option>
+                                <option value="">5 Years</option>
+                                <option value="">6 Years</option>
+                                <option value="">7 Years</option>
+                                <option value="">8 Years</option>
+                                <option value="">9 Years</option>
+                                <option value="">10 Years</option>
+                                <option value="">10+ Years</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="col-md-8 col-lg-9 ">
                 <div class="job_listing_area">
