@@ -36,12 +36,12 @@ class JobsController extends Controller
         if (!empty($request->experience)) {
             $jobs = $jobs->where('experience', $request->experience);
         }
-        
+
         $jobs = $jobs->with(['jobType', 'category']);
 
-        if($request->sort == "oldest"){
+        if ($request->sort == "oldest") {
             $jobs = $jobs->orderBy('created_at', 'ASC');
-        }else{
+        } else {
             $jobs = $jobs->orderBy('created_at', 'DESC');
         }
         $jobs = $jobs->paginate(9);
@@ -54,5 +54,15 @@ class JobsController extends Controller
                 'jobTypeArray' => $jobTypeArray,
             ]
         );
+    }
+
+    public function detail($id)
+    {
+        $job = Job::where(['id' => $id, 'status' => 1])->with(['jobType', 'category'])->first();
+
+        if ($job == null) {
+            abort(404);
+        }
+        return view('front.jobDetail', ['job' => $job]);
     }
 }
