@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Job;
+use App\Models\JobApplication;
 use App\Models\JobType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobsController extends Controller
 {
@@ -64,5 +66,46 @@ class JobsController extends Controller
             abort(404);
         }
         return view('front.jobDetail', ['job' => $job]);
+    }
+
+    public function applyJob(Request $request)
+    {
+        $id = $request->id;
+        $job = Job::where('id', $id)->first();
+
+        // If job not found in db
+        if ($job == null) {
+            $message = 'Job not found!';
+            session()->flash('error', $message);
+            return response()->json([
+                'status' => false,
+                'message' => $message
+            ]);
+        }
+
+        // you can not apply on your own job
+        $employer_id = $job->user_id;
+        if ($employer_id == Auth::user()->id) {
+            $message = 'You can not apply on your own job!';
+            session()->flash('error', $message);
+            session()->flash('error', );
+            return response()->json([
+                'status' => false,
+                'message' => $message
+            ]);
+        }
+
+        $application = new JobApplication();
+        $application->job_id = $id;
+        $application->user_id = Auth::user()->id;
+        $application->employer_id = $employer_id;
+        $application->applied_date = now();
+        $application->save();
+        $message = 'Job applied successfully!';
+        session()->flash('success',  $message);
+        return response()->json([
+            'status' => true,
+            'message' => $message
+        ]);
     }
 }
