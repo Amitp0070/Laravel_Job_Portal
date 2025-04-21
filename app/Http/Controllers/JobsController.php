@@ -75,23 +75,31 @@ class JobsController extends Controller
 
         // If job not found in db
         if ($job == null) {
-            $message = 'Job not found!';
-            session()->flash('error', $message);
             return response()->json([
                 'status' => false,
-                'message' => $message
+                'message' => 'Job not found!'
             ]);
         }
 
-        // you can not apply on your own job
+        // You cannot apply on your own job
         $employer_id = $job->user_id;
         if ($employer_id == Auth::user()->id) {
-            $message = 'You can not apply on your own job!';
-            session()->flash('error', $message);
-            session()->flash('error', );
             return response()->json([
                 'status' => false,
-                'message' => $message
+                'message' => 'You cannot apply on your own job!'
+            ]);
+        }
+
+        $jobApplicationCount = JobApplication::where([
+            'user_id' => Auth::user()->id,
+            'job_id' => $id
+        ])->count();
+
+        // If already applied for this job
+        if ($jobApplicationCount > 0) {
+            return response()->json([
+                'status' => false,
+                'message' => 'You have already applied for this job!'
             ]);
         }
 
@@ -101,11 +109,10 @@ class JobsController extends Controller
         $application->employer_id = $employer_id;
         $application->applied_date = now();
         $application->save();
-        $message = 'Job applied successfully!';
-        session()->flash('success',  $message);
+
         return response()->json([
             'status' => true,
-            'message' => $message
+            'message' => 'Job applied successfully!'
         ]);
     }
 }

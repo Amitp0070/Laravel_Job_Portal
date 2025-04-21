@@ -16,6 +16,7 @@
     <div class="container job_details_area">
         <div class="row pb-5">
             <div class="col-md-8">
+            <div id="message-container"></div>
                 @include('front.message')
                 <div class="card shadow border-0">
                     <div class="job_details_header">
@@ -70,7 +71,7 @@
                         <div class="pt-3 text-end">
                             <a href="#" class="btn btn-secondary">Save</a>
                             @if(Auth::check())
-                            <a href="#" onclick="applyJob('{{ $job->id }}')" class="btn btn-primary">Apply</a>
+                            <a href="#" class="btn btn-primary">Apply</a>
                             @else
                             <a href="javascript:void(0);" class="btn btn-primary">Login to Apply</a>
                             @endif
@@ -130,14 +131,26 @@
                 url: "{{ route('applyJob') }}",
                 type: "POST",
                 data: {
-                    id: id
+                    id: id,
+                    _token: '{{ csrf_token() }}', // Don't forget the CSRF token for security
                 },
                 dataType: "json",
-                success: function(responce) {
-                    window.location.reload();
+                success: function(response) {
+                    // Display the message from the server
+                    if (response.status) {
+                        // Show success message
+                        $('#message-container').html('<div class="alert alert-success">' + response.message + '</div>');
+                    } else {
+                        // Show error message
+                        $('#message-container').html('<div class="alert alert-danger">' + response.message + '</div>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $('#message-container').html('<div class="alert alert-danger">Something went wrong. Please try again.</div>');
                 }
             });
         }
     }
 </script>
+
 @endsection
